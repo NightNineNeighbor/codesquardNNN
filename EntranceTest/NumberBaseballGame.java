@@ -1,52 +1,52 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class NumberBaseballGame {
+	private BaseballReferee referee;
+	private Scanner sc;
+	
 	public static void main(String[] args) {
-		ArrayList<Integer> list = new ArrayList<>();
-		
-		for(int i = 1; i <=9; i++) {
-			list.add(i);
+		NumberBaseballGame game = new NumberBaseballGame();
+		game.gameBoot();
+		do{
+			String input = game.getCheckedInput();
+			game.referee.judgement(input);
+			game.referee.declaration();
+		}while(!game.isGameClear());
+		game.gameFinalize();
+	}
+	
+	public NumberBaseballGame() {
+		sc = new Scanner(System.in);
+	}
+	
+	private void gameBoot() {
+		referee = new BaseballReferee();
+	}
+	
+	private String getCheckedInput() {
+		String input = "";
+		do {
+			input = getInput();
 		}
-		
-		Collections.shuffle(list);
-		
-		String answer = "" + list.get(0) + list.get(1) + list.get(2);
-		answer = "713"; //debug
-		System.out.println("[debug] answer : " + answer);
-		
-		boolean isSolved = false;
-		Scanner sc = new Scanner(System.in);
-		while(!isSolved) {
-			System.out.println("숫자를 입력해 주세요 ex)123 : ");
-			String input = sc.nextLine();
-			System.out.println(input);
-			
-			int ball = 0;
-			int strike = 0;
-			
-			for(int i =0; i < 3 ; i++) {
-				int index = answer.indexOf(input.substring(i, i+1));
-				if(index == i)
-					strike++;
-				else if(index != -1)
-					ball++;
-			}
-			
-			if(strike != 0)
-				System.out.print(strike + " 스트라이크");
-			if(ball != 0)
-				System.out.print(ball + " 볼");
-			if(strike == 0 && ball == 0)
-				System.out.println("낫싱");
-			System.out.println();
-			if(strike == 3) {
-				System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
-				isSolved = true;
-			}
-			
+		while(!referee.isValidInput(input));
+		return input;
+	}
+	
+	private String getInput() {
+		System.out.print("숫자를 입력해 주세요 ex)123 : ");
+		return sc.nextLine();
+	}
+	
+	private boolean isGameClear() {
+		if(referee.isOut()) {
+			System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+			return true;
+		}else {
+			return false;
 		}
+	}
+	
+	private void gameFinalize() {
 		sc.close();
 	}
 }
