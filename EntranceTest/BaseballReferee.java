@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class BaseballReferee {
-	private static final String STRIKE_ZONE_POOL = "0123456789";
+	private static final String STRIKE_ZONE_POOL = "1234567890";
 	private static final int STRIKE_ZONE_SIZE = 3;
 	private String strikeZone;
 	private int strike;
@@ -43,7 +43,7 @@ public class BaseballReferee {
 	}
 	
 	private boolean isContentValid(String input) {
-		for(int i = 0; i < 3; i++) {
+		for(int i = 0; i < STRIKE_ZONE_SIZE; i++) {
 			if(STRIKE_ZONE_POOL.indexOf(input.substring(i,i+1)) == -1) {
 				System.out.println("숫자를 입력하세요. 잘못된 입력입니다.");
 				return false;
@@ -54,13 +54,17 @@ public class BaseballReferee {
 	
 	public void judgement(String input) {
 		strike = ball = 0;
-		for(int i =0; i < 3 ; i++) {
-			int index = strikeZone.indexOf(input.substring(i, i+1));
-			if(index == i)
-				strike++;
-			else if(index != -1)
-				ball++;
+		for(int Nth =0; Nth < STRIKE_ZONE_SIZE ; Nth++) {
+			judgeNthBall(Nth, input.substring(Nth, Nth+1));
 		}
+	}
+	
+	public void judgeNthBall(int Nth, String NthBall) {
+		int hitIndex = strikeZone.indexOf(NthBall);
+		if(hitIndex == Nth)
+			strike++;
+		else if(hitIndex != -1)
+			ball++;
 	}
 	
 	public void declaration() {
