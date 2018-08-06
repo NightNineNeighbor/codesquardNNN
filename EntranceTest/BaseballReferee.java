@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+﻿import java.util.ArrayList;
 import java.util.Collections;
 
 public class BaseballReferee {
@@ -28,10 +28,10 @@ public class BaseballReferee {
 	}
 	
 	public boolean isValidInput(String input) {
-		if(!isLengthValid(input) || !isContentValid(input)) {
-			return false;
-		}else
+		if(isLengthValid(input) && isContentValid(input) && !isDuplicate(input)) {
 			return true;
+		}else
+			return false;
 	}
 	
 	private boolean isLengthValid(String input) {
@@ -50,6 +50,19 @@ public class BaseballReferee {
 			}
 		}
 		return true;
+	}
+	
+	private boolean isDuplicate(String input) {
+		ArrayList<String> cache = new ArrayList<>();
+		for(int i =0 ; i < input.length(); i++) {
+			String oneString = input.substring(i, i + 1);
+			if(cache.indexOf(oneString) != -1) {
+				System.out.println("중복 입력입니다.");
+				return true;
+			}
+			cache.add(oneString);
+		}
+		return false;
 	}
 	
 	public void judgement(String input) {
